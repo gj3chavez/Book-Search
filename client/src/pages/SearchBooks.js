@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Jumbotron,
   Container,
   Col,
   Form,
   Button,
   Card,
-  CardColumns
+  Row
   
 } from 'react-bootstrap';
 
 import Auth from '../utils/auth';
 import { searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
-// import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 import { SAVE_BOOK } from '../utils/mutations';
+import { GET_ME } from '../utils/queries';
 
 const SearchBooks = () => {
+  console.log('SearchBooks');
   // create state for holding returned google api data
   const [searchedBooks, setSearchedBooks] = useState([]);
   // create state for holding our search field data
@@ -24,6 +25,8 @@ const SearchBooks = () => {
 
   // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
+
+  const [saveBook] = useMutation (SAVE_BOOK)
 
   // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
   // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
@@ -40,7 +43,8 @@ const SearchBooks = () => {
     }
 
     try {
-      const response = await searchGoogleBooks(searchInput);
+      const response = await searchGoogleBooks(searchInput
+      );
 
       if (!response.ok) {
         throw new Error('something went wrong!');
@@ -53,6 +57,7 @@ const SearchBooks = () => {
         authors: book.volumeInfo.authors || ['No author to display'],
         title: book.volumeInfo.title,
         description: book.volumeInfo.description,
+        link: book.volumeInfo.infoLink,
         image: book.volumeInfo.imageLinks?.thumbnail || '',
       }));
 
@@ -76,14 +81,21 @@ const SearchBooks = () => {
     }
 
     try {
-      const { data } = await SAVE_BOOK({
+       await saveBook({
         variables: { input: bookToSave },
+        update: cache => {
+          const {me} = cache.readQuery({ query: GET_ME });
+        
+          cache.writeQuery({
+            query: GET_ME,
+            data: { me: { me: {...me, savedBooks: [...me.savedBooks, bookToSave] }}
+          }});
+        }
       });
+      
 
       // eslint-disable-next-line no-undef
-      if (error) {
-        throw new Error('something went wrong!');
-      }
+    
 
       // if book successfully saves to user's account, save book id to state
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
@@ -94,11 +106,11 @@ const SearchBooks = () => {
 
   return (
     <>
-      <Jumbotron fluid className='text-light bg-dark'>
+      <div fluid className='text-light bg-dark'>
         <Container>
           <h1>Search for Books!</h1>
           <Form onSubmit={handleFormSubmit}>
-            <Form.Row>
+            <Row>
               <Col xs={12} md={8}>
                 <Form.Control
                   name='searchInput'
@@ -114,10 +126,10 @@ const SearchBooks = () => {
                   Submit Search
                 </Button>
               </Col>
-            </Form.Row>
+            </Row>
           </Form>
         </Container>
-      </Jumbotron>
+      </div>
   
 
       <Container>
@@ -126,7 +138,7 @@ const SearchBooks = () => {
             ? `Viewing ${searchedBooks.length} results:`
             : 'Search for a book to begin'}
         </h2>
-        <CardColumns>
+        <Row>
           {searchedBooks.map((book) => {
             return (
               <Col md="4">
@@ -153,7 +165,7 @@ const SearchBooks = () => {
               </Col>
             );
           })}
-        </CardColumns>
+        </Row>
       </Container>
     </>
   );

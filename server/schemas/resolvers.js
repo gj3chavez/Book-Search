@@ -18,7 +18,9 @@ const resolvers = {
 
     Mutation: {
         addUser: async (parent, args) => {
+         
             const user = await User.create(args);
+            console.log(user)
             const token = signToken(user);
 
             return { token, user };
@@ -41,25 +43,11 @@ const resolvers = {
             return { token, user };
         },
  
-    saveBook: async (parent, { bookData }, context) => {
+    saveBook: async (parent, { book }, context) => {
         if (context.user) {
-        const user = await User.findByIdAndUpdate(
+        const updatedUser = await User.findOneAndUpdate(
             { _id: context.user._id },
-            { $addToSet: { savedBooks: bookData } },
-            { new: true }
-        );
-
-        return user;
-    }
-
-    throw new AuthenticationError('You need to be logged in!')
-},
-
-    deleteBook: async (parent, args, context) => {
-    if (context.user) {
-        const updatedUser = await User.findByIdAndUpdate(
-            { _id: context.user._id },
-            { $pull: { savedBooks: { bookId: args.bookId} } },
+            { $addToSet: { savedBooks: book } },
             { new: true }
         );
 
@@ -67,6 +55,20 @@ const resolvers = {
     }
 
     throw new AuthenticationError('You need to be logged in!')
+},
+
+    removeBook: async (parent, { bookId }, context) => {
+    if (context.user) {
+        const updatedUser = await User.findOneAndUpdate(
+            { _id: context.user._id },
+            { $pull: { savedBooks: { bookId: bookId} } },
+            { new: true }
+        );
+
+        return updatedUser;
+    }
+
+    // throw new AuthenticationError('You need to be logged in!')
 }
     }
 };
