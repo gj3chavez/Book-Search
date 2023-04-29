@@ -1,15 +1,17 @@
-# E-Commerce Back End
+# Book Search Engine
 ![JavaScript](https://img.shields.io/badge/-JavaScript-yellow)  ![Noje.js](https://img.shields.io/badge/-node.js-brightgreen)  
 
 
 ## Description
-   The app was built using the MERN stack with a React front end, MongoDB database, and Node.js/Express.js server and API. It's already set up to allow users to save book searches to the back end.
+   Using Google Books API search engine built with a RESTful API, and refactor it to be a GraphQL API built with Apollo Server.The app was built using the MERN stack with a React front end, MongoDB database, and Node.js/Express.js server and API. It's already set up to allow users to save book searches to the back end.
 
    Link to Heroku: 
    
 
 ## Screenshot
-![Book-Search-Engine]()
+| Start Search Book |    Book Searched   |
+|-------------------|--------------------|
+![Book-Search-Engine](/images/Screenshot%20b-s.png)|![Book-Search-Engine](/images/Screenshot-2.png)|
 
 
 
@@ -26,31 +28,22 @@
 * [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 * [Express.js](https://expressjs.com/)
 * [Node.js](https://nodejs.org/en/)
-* [React.js]()
-* [GraphQL]()
-* [Apollo Server]()
-* [bcrypt]()
-* [JWT]()
+* [React.js](https://react.dev/)
+* [GraphQL](https://graphql.org/)
+* [Apollo Server](https://www.apollographql.com/docs/apollo-server/)
+* [bcrypt](https://www.npmjs.com/package/bcrypt)
+* [JWT](https://jwt.io/)
+* [Mongodb]()
+* [Mongoose]()
+* 
 
 
 
 
 ## Installation 
-* In order to use this application you must clone the repository on your local machine.
+* In order to use this application `npm i` has to be called to create `package.json` file.
 * Make sure that your repo includes all the require dependencies. 
-
-
-## Usage
-After installing a `package.json` with the require dependencies you can proceed to:
-* Creat, Sync and Seed data:
-    * Type `mysql -u root -p` in your terminal and add your password.
-    * Then `source db/schema.sql` and `quit`.
-    * To seed it: `node seeds/index.js`
-    * Type `npm start` to start the server and use [Insomnia](https://insomnia.rest/download) to interact with the app. 
-
-
-## Test
-Insomnia was used to test REST API calls.
+* To install the database you must create at cluster on Mongodb Atlas.
 
 
 ## Contribution
