@@ -18,7 +18,6 @@
 ## Table of Contents
   - [Description](#Description)
   - [Installation](#Installation)
-  - [Usage](#Usage)
   - [Contribution](#Contribution)
   - [License](#License)
  
@@ -35,9 +34,6 @@
 * [JWT](https://jwt.io/)
 * [Mongodb]()
 * [Mongoose]()
-* 
-
-
 
 
 ## Installation 
