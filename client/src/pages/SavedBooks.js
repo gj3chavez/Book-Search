@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Accordion,
   Container,
   Card,
   Button,
@@ -63,14 +64,14 @@ const SavedBooks = () => {
 
   return (
     <>
-    <div fluid className='text-light bg-dark'>
+    <Accordion fluid="true" className='text-light bg-dark'>
         <Container>
           <h1>Viewing saved books!</h1>
         </Container>
-      </div>
+      </Accordion>
   
       <Container>
-        <h2 className='pt-5'>
+        <h2>
           {userData.savedBooks.length
             ? `Viewing ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'}:`
             : 'You have no saved books!'}

@@ -5,8 +5,8 @@ import {
   Form,
   Button,
   Card,
-  Row
-  
+  Row,
+  Accordion
 } from 'react-bootstrap';
 
 import Auth from '../utils/auth';
@@ -82,13 +82,13 @@ const SearchBooks = () => {
 
     try {
        await saveBook({
-        variables: { input: bookToSave },
+        variables: { book: bookToSave },
         update: cache => {
           const {me} = cache.readQuery({ query: GET_ME });
         
           cache.writeQuery({
             query: GET_ME,
-            data: { me: { me: {...me, savedBooks: [...me.savedBooks, bookToSave] }}
+            data: { me:  {...me, savedBooks: [...me.savedBooks, bookToSave] }
           }});
         }
       });
@@ -106,7 +106,7 @@ const SearchBooks = () => {
 
   return (
     <>
-      <div fluid className='text-light bg-dark'>
+      <Accordion fluid="true" className='text-light bg-dark'>
         <Container>
           <h1>Search for Books!</h1>
           <Form onSubmit={handleFormSubmit}>
@@ -129,9 +129,7 @@ const SearchBooks = () => {
             </Row>
           </Form>
         </Container>
-      </div>
-  
-
+      </Accordion>
       <Container>
         <h2 className='pt-5'>
           {searchedBooks.length

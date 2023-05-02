@@ -52,12 +52,9 @@ function App() {
       <>
         <Navbar />
         <Routes>
-          <Route 
-             exact path='/' element={<SearchBooks/> }/>
-          <Route 
-            exact path='/saved' element={<SavedBooks/>}/>
-          {/* <Route render={() => <h1 className='display-2'>Wrong page!</h1>}
-          /> */}
+          <Route exact path='/' element={<SearchBooks/> }/>
+          <Route exact path='/saved' element={<SavedBooks/>}/>
+          <Route render={() => <h1 className='display-2'>Wrong page!</h1>} />
         </Routes>
       </>
     </Router>
