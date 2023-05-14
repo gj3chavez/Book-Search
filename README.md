@@ -9,7 +9,7 @@
    
 ## Application Preview
 The following animation shows the app functionality.
-![Book-Search-Engine](./images/BookSearchEngine.gif)
+![Book-Search-Engine](./images/BookSearch.gif)
 ## Screenshot
 | Start Search Book |    Book Searched   |
 |-------------------|--------------------|
