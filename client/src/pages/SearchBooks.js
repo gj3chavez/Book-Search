@@ -12,12 +12,12 @@ import {
 import Auth from '../utils/auth';
 import { searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import { SAVE_BOOK } from '../utils/mutations';
 import { GET_ME } from '../utils/queries';
 
 const SearchBooks = () => {
-  console.log('SearchBooks');
+  // console.log('SearchBooks');
   // create state for holding returned google api data
   const [searchedBooks, setSearchedBooks] = useState([]);
   // create state for holding our search field data
@@ -81,28 +81,31 @@ const SearchBooks = () => {
     }
 
     try {
-       await saveBook({
-        variables: { book: bookToSave },
-        update: cache => {
-          const {me} = cache.readQuery({ query: GET_ME });
+       const {data} = await saveBook({
+        variables: { bookData: {...bookToSave }},
+       });
+       console.log(saveBookIds);
+       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
+      } catch (err) {
+        console.error(err);
+      }
+    }; 
+
+      //   update: cache => {
+      //     const {me} = cache.readQuery({ query: GET_ME });
         
-          cache.writeQuery({
-            query: GET_ME,
-            data: { me:  {...me, savedBooks: [...me.savedBooks, bookToSave] }
-          }});
-        }
-      });
+      //     cache.writeQuery({
+      //       query: GET_ME,
+      //       data: { me:  {...me, savedBooks: [...me.savedBooks, bookToSave] }
+      //     }});
+      //   }
+      // });
       
 
       // eslint-disable-next-line no-undef
     
 
       // if book successfully saves to user's account, save book id to state
-      setSavedBookIds([...savedBookIds, bookToSave.bookId]);
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   return (
     <>

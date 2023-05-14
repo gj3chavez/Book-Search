@@ -10,22 +10,22 @@ import {
 
 import { GET_ME} from '../utils/queries';
 import { REMOVE_BOOK } from '../utils/mutations';
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/client';
 import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
   const { loading, data } = useQuery(GET_ME);
-  const [deleteBook] = useMutation(REMOVE_BOOK);
+  const [removeBook] = useMutation(REMOVE_BOOK);
   const userData = data?.me || {};
 
-  if (!userData?.username) {
-    return (
-      <h4 className='text-light bg-dark p-3'>
-        You need to be logged in to see this page. Use the navigation links above to sign up or log in!
-      </h4>
-    );
-  }
+  // if (!userData?.username) {
+  //   return (
+  //     <h4 className='text-light bg-dark p-3'>
+  //       You need to be logged in to see this page. Use the navigation links above to sign up or log in!
+  //     </h4>
+  //   );
+  // }
 
   
   const handleDeleteBook = async (bookId) => {
@@ -36,20 +36,23 @@ const SavedBooks = () => {
     }
 
     try {
-      await deleteBook({
-        variables: { bookId: bookId },
-        update: cache => {
-          const data = cache.readQuery({ query: GET_ME });
-          const userDataCache = data.me;
-          const savedBooksCache = userDataCache.savedBooks;
-          const updatedBookCache = savedBooksCache.filter((book) => book.bookId !== bookId);
-          data.me.savedBooks = updatedBookCache;
-          cache.writeQuery({
-            query: GET_ME,
-            data: { data: {...data.me.savedBooks}}
-          });
-        }
-      });
+      const {data} = await removeBook({
+        variables: {bookId: bookId},
+      }); 
+      // await deleteBook({
+      //   variables: {bookId: bookId},
+      //   update: cache => {
+      //     const data = cache.readQuery({ query: GET_ME });
+      //     const userDataCache = data.me;
+      //     const savedBooksCache = userDataCache.savedBooks;
+      //     const updatedBookCache = savedBooksCache.filter((book) => book.bookId !== bookId);
+      //     data.me.savedBooks = updatedBookCache;
+      //     cache.writeQuery({
+      //       query: GET_ME,
+      //       data: { data: {...data.me.savedBooks}}
+      //     });
+      //   }
+      // });
 
 
       removeBookId(bookId);
@@ -66,7 +69,7 @@ const SavedBooks = () => {
     <>
     <Accordion fluid="true" className='text-light bg-dark'>
         <Container>
-          <h1>Viewing saved books!</h1>
+          <h1>Viewing {userData.username}'s books!</h1>
         </Container>
       </Accordion>
   
@@ -85,6 +88,7 @@ const SavedBooks = () => {
                   <Card.Body>
                     <Card.Title>{book.title}</Card.Title>
                     <p className='small'>Authors: {book.authors}</p>
+                    {book.link ? <Card.Text><a href={book.link} target="_blank" rel="noreferrer">More Info</a></Card.Text> : null}
                     <Card.Text>{book.description}</Card.Text>
                     <Button className='btn-block btn-danger' onClick={() => handleDeleteBook(book.bookId)}>
                       Delete this Book!

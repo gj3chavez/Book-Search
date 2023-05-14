@@ -7,7 +7,9 @@
 
    Link to Heroku: 
    
-
+## Application Preview
+The following animation shows the app functionality.
+![Book-Search-Engine](./images/BookSearchEngine.gif)
 ## Screenshot
 | Start Search Book |    Book Searched   |
 |-------------------|--------------------|
@@ -43,7 +45,7 @@
 
 
 ## Contribution
-For questions please reach me at: giuliana@gmail.com <br/>
+For questions please reach me at: giuliana@example.com <br/>
 My Github: [Giuliana](https://github.com/gj3chavez)
 
 
